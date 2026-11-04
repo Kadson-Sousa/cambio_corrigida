@@ -31,6 +31,8 @@ import java.io.InputStream
 import java.net.MalformedURLException
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,31 +74,33 @@ fun CurrencyConverterApp() {
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-                // Campo para inserção do valor
-                var inputValue by remember { mutableStateOf("") }
-                BasicTextField(
-                    value = inputValue,
-                    onValueChange = { inputValue = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    singleLine = true,
-                    decorationBox = { innerTextField ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp)
-                                .background(Color.LightGray),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            if (inputValue.isEmpty()) Text(
-                                stringResource(id = R.string.enter_value_hint),
-                                color = Color.Gray
-                            )
-                            innerTextField()
-                        }
+            // Campo para inserção do valor
+            var inputValue by remember { mutableStateOf("") }
+            val textoHint = stringResource(id = R.string.enter_value_hint)
+            BasicTextField(
+                value = inputValue,
+                onValueChange = { inputValue = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+                    .semantics { contentDescription = textoHint },
+                singleLine = true,
+                decorationBox = { innerTextField ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .background(Color.LightGray),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (inputValue.isEmpty()) Text(
+                            textoHint,
+                            color = Color.Black
+                        )
+                        innerTextField()
                     }
-               )
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
